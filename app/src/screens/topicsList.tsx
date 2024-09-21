@@ -1,8 +1,9 @@
 import { StyleSheet, ScrollView } from "react-native";
 import TopicCard from "../components/topicCard";
+import { Colors } from '@/constants/Colors';
 
 
-const HomeScreen = () => {
+const TopicsList = () => {
   // Posteriormente o TopicCard será substituído por um FOR dos resultados da API
   return (
     <ScrollView style={styles.container}>
@@ -21,8 +22,8 @@ const HomeScreen = () => {
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: '#121212',
+    backgroundColor: Colors.dark.background,
   }
 })
 
-export default HomeScreen
+export default TopicsList

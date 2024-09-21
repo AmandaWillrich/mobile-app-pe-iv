@@ -1,7 +1,7 @@
 import React from 'react';
-import { StyleSheet, Text, View, Image, ScrollView } from 'react-native';
+import { StyleSheet, Text, View, Image } from 'react-native';
+import { Colors } from '@/constants/Colors';
 
-// Define o tipo das props que o TopicCard receberá
 interface TopicCardProps {
   title: string;
   description: string;
@@ -14,9 +14,7 @@ const TopicCard: React.FC<TopicCardProps> = ({ title, description, imageUrl }) =
       <Image source={{ uri: imageUrl }} style={styles.image} />
       <View style={styles.textContainer}>
         <Text style={styles.title}>{title}</Text>
-        <ScrollView style={styles.descriptionContainer}>
-          <Text style={styles.description}>{description}</Text>
-        </ScrollView>
+        <Text style={styles.description}>{description}</Text>
       </View>
     </View>
   );
@@ -25,37 +23,29 @@ const TopicCard: React.FC<TopicCardProps> = ({ title, description, imageUrl }) =
 const styles = StyleSheet.create({
   topicCard: {
     flexDirection: 'row',
-    flexWrap: 'wrap',
+    backgroundColor: Colors.dark.secondaryBackground,
     padding: 10,
-    margin: 10,
-    backgroundColor: '#2c2c2c',
+    margin: 7,
     borderRadius: 5,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.2,
-    shadowRadius: 4,
-    alignItems: 'flex-start',
-    maxWidth: '100%',
-  },
-  image: {
-    width: 80,
-    height: 80,
-    borderRadius: 5,
-    marginRight: 10,
   },
   textContainer: {
     flex: 1,
   },
   title: {
+    color: Colors.dark.primaryText,
     fontWeight: 'bold',
     marginBottom: 5,
-    color: '#ffffff',
-  },
-  descriptionContainer: {
-    maxHeight: 100,
+    flexShrink: 1,
   },
   description: {
-    color: '#cccccc',
+    color: Colors.dark.secondaryText,
+    flexShrink: 1,
+  },
+  image: {
+    width: 80,
+    height: 80,
+    marginRight: 10,
+    borderRadius: 5,
   },
 });
 
