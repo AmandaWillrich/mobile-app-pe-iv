@@ -1,29 +1,73 @@
-import { StyleSheet, ScrollView } from "react-native";
+import React, { Key, useEffect, useState } from "react"; 
+import { StyleSheet, ScrollView, Text, ActivityIndicator, TouchableOpacity } from "react-native";
 import TopicCard from "../components/topicCard";
-import { Colors } from '@/constants/Colors';
+import { Colors } from "@/constants/Colors";
+import { useNavigation } from '@react-navigation/native';
 
+interface Topic {
+  id: Key,
+  title: string;
+  content: string;
+  date_posted: string;
+  author: string;
+}
 
-const TopicsList = () => {
-  // Posteriormente o TopicCard será substituído por um FOR dos resultados da API
+const TopicsList: React.FC = () => {
+  const navigation = useNavigation();
+  const [topics, setTopics] = useState<Topic[]>([]);
+  const [loading, setLoading] = useState<boolean>(true);
+  const [error, setError] = useState<string>("");
+
+  useEffect(() => {
+    const fetchTopics = async () => {
+      try {
+        // const response = await fetch("http://10.0.2.2:8000/api/topic/"); local
+        const response = await fetch("https://pe-iv.vercel.app/api/topic/");
+        if (!response.ok) {
+          throw new Error("Network response was not ok");
+        }
+        const data: Topic[] = await response.json();
+        setTopics(data);
+      } catch (error) {
+        setError(`Error fetching topics: ${error}`);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchTopics();
+  }, []);
+
+  if (loading) {
+    return <ActivityIndicator size="large" color={Colors.dark.tint} />;
+  }
+
+  if (error) {
+    return <Text style={{ color: Colors.dark.secondaryText }}>{error}</Text>;
+  }
+
   return (
     <ScrollView style={styles.container}>
-      <TopicCard title="Qual é a diferença entre armazenamento em nuvem e armazenamento local?" description="Por Username" imageUrl="https://reactjs.org/logo-og.png" />
-      <TopicCard title="Existe uma maneira fácil de migrar meus dados de um dispositivo para outro?" description="Por Username" imageUrl="https://reactjs.org/logo-og.png" />
-      <TopicCard title="Como posso configurar uma rede Wi-Fi em casa para obter a melhor cobertura?" description="Por Username" imageUrl="https://reactjs.org/logo-og.png" />
-      <TopicCard title="Quais são os sinais de que meu computador pode estar infectado?" description="Por Username" imageUrl="https://reactjs.org/logo-og.png" />
-      <TopicCard title="Como faço para configurar uma rede doméstica segura?" description="Por Username" imageUrl="https://reactjs.org/logo-og.png" />
-      <TopicCard title="Estou considerando atualizar meu hardware. O que devo priorizar?" description="Por Username" imageUrl="https://reactjs.org/logo-og.png" />
-      <TopicCard title="Como posso recuperar arquivos perdidos no meu computador?" description="Por Username" imageUrl="https://reactjs.org/logo-og.png" />
-      <TopicCard title="Qual é a melhor maneira de proteger meu computador contra vírus?" description="Por Username" imageUrl="https://reactjs.org/logo-og.png" />
-      <TopicCard title="Estou tendo problemas com atualização do Windows" description="Por Username" imageUrl="https://reactjs.org/logo-og.png" />
+      {topics.map((topic) => (
+        <TouchableOpacity
+          key={topic.id}
+          onPress={() => navigation.navigate('TopicDetail', { id: topic.id })}
+        >
+          <TopicCard
+            title={topic.title}
+            author={`Por ${topic.author}`}
+            imageUrl="https://reactjs.org/logo-og.png"
+          />
+        </TouchableOpacity>
+      ))}
     </ScrollView>
   );
-}
+};
 
 const styles = StyleSheet.create({
   container: {
     backgroundColor: Colors.dark.background,
-  }
-})
+  },
+});
 
-export default TopicsList
+export default TopicsList;

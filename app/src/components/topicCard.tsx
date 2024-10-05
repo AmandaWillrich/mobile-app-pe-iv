@@ -4,17 +4,17 @@ import { Colors } from '@/constants/Colors';
 
 interface TopicCardProps {
   title: string;
-  description: string;
+  author: string;
   imageUrl: string;
 }
 
-const TopicCard: React.FC<TopicCardProps> = ({ title, description, imageUrl }) => {
+const TopicCard: React.FC<TopicCardProps> = ({ title, author, imageUrl }) => {
   return (
     <View style={styles.topicCard}>
       <Image source={{ uri: imageUrl }} style={styles.image} />
       <View style={styles.textContainer}>
         <Text style={styles.title}>{title}</Text>
-        <Text style={styles.description}>{description}</Text>
+        <Text style={styles.author}>{author}</Text>
       </View>
     </View>
   );
@@ -37,7 +37,7 @@ const styles = StyleSheet.create({
     marginBottom: 5,
     flexShrink: 1,
   },
-  description: {
+  author: {
     color: Colors.dark.secondaryText,
     flexShrink: 1,
   },

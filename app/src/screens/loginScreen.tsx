@@ -9,7 +9,7 @@ const LoginScreen = ({ onLogin }) => {
   const [password, setPassword] = useState('');
 
   const handleLogin = () => {
-    // Aqui você pode adicionar lógica de autenticação
+    // TODO: add auth logic
     onLogin();
   };
 
